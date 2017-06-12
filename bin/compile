@@ -12,9 +12,21 @@ if [ ! -f "${ENV_DIR}/APP_BASE" ]; then
     echo "APP_BASE was not set. Aborting" | indent
     exit 1
 fi
+if [ ! -f "${ENV_DIR}/COPY_DIR" ]; then
+    echo "COPY_DIR was not set. Aborting" | indent
+    exit 1
+fi
+
+COPY_DIR="$(cat "${ENV_DIR}/COPY_DIR")"
+if [ ! -d "${BUILD_DIR}/${COPY_DIR}" ]; then
+    echo "COPY_DIR does not exist. Aborting" | indent
+    exit 1
+fi
+
 APP_BASE="$(cat "${ENV_DIR}/APP_BASE")"
 
 (
+    mv "${BUILD_DIR}/${COPY_DIR}" "${BUILD_DIR}/${APP_BASE}" &&
     mv "${BUILD_DIR}/${APP_BASE}" "${STAGE}" &&
     rm -rf "${BUILD_DIR}" &&
     mv "${STAGE}/$(basename "$APP_BASE")" "${BUILD_DIR}"
