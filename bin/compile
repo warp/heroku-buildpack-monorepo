@@ -31,7 +31,7 @@ APP_BASE="$(cat "${ENV_DIR}/APP_BASE")"
     rm -rf "${BUILD_DIR}/{*,.*}" &&
     mv "${STAGE}/$(basename "$APP_BASE")" "${BUILD_DIR}/"
 )
-
+ls $BUILD_DIR
 if [ $? -ne 0 ]; then
     echo "FAILED to copy directory into place" | indent
     exit 1
